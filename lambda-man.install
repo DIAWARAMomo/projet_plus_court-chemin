@@ -1,0 +1,11 @@
+lib: [
+  "_build/install/default/lib/lambda-man/META"
+  "_build/install/default/lib/lambda-man/dune-package"
+  "_build/install/default/lib/lambda-man/opam"
+]
+bin: [
+  "_build/install/default/bin/lambda"
+]
+doc: [
+  "_build/install/default/doc/lambda-man/README.md"
+]

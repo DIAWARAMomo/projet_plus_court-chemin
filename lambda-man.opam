@@ -1,0 +1,36 @@
+opam-version: "2.0"
+
+name: "lambda-man"
+version: "0.1"
+
+synopsis: "A programming game"
+description: """
+Conquest a planet by collecting all its Bohm trees!
+"""
+
+maintainer: "Yann Régis-Gianas <yann.regis-gianas@irif.fr>"
+authors: [
+  "Yann Régis-Gianas <yann.regis-gianas@irif.fr>"
+]
+license: "GPL3"
+
+depends: [
+  "dune"                 { build & >= "1.10.0" }
+  "ocaml"                { = "4.08.1"          }
+  "ocamlfind"
+  "utop"
+  "merlin"
+  "lwt"
+  "lwt_ppx"
+  "graphics"
+  "cmdliner"
+  "ppx_deriving_yojson"
+  "ppx_inline_test"
+  "odoc"                 { with-doc            }
+  "cohttp"               { >= "2.1.2"          }
+  "cohttp-lwt-unix"      { >= "2.1.2"          }
+]
+
+build: ["dune" "build" "-p" name "-j" jobs]
+
+run-test: [make "check"]

@@ -1,0 +1,46 @@
+type observation =
+{
+    trees      : tree list;           (** Les arbres de Böhm.                *)
+    messages   : left_microcode list; (** Les microcodes à proximité.        *)
+    around     : kind Space.t;        (** L'espace visible par le robot.     *)
+    speed      : Space.speed;         (** La vitesse courante du robot.      *)
+    max_speed  : Space.speed;         (** Vitesse maximale au point courant. *)
+    angle      : Space.angle;         (** La direction courante du robot.    *)
+    position   : Space.position;      (** La position courante du robot.     *)
+    spaceship  : Space.position;      (** Position du vaisseau.              *)
+    energy     : int;                 (** L'énergie courante du robot.       *)
+    score      : int;                 (** Le score du robot.                 *)
+    epoch      : int;
+    visibility : float;
+    game_over  : bool;
+}
+
+
+type memory = {
+    known_world : World.t option;      (** Le monde connu par le robot.     *)
+    graph       : Graph.t;             (** Un graphe qui sert de carte.     *)
+    objective   : objective;           (** L'objectif courant du robot.     *)
+    targets     : Space.position list; (** Les points où il doit se rendre. *)
+}
+
+
+(** Le graphe vide. *)
+val empty : t
+
+(** [add_node g n] est un graphe qui est égal à [g] étendu par [n]. *)
+val add_node : t -> node -> t
+
+(** [add_edge g e] est un graphe qui est égal à [g] étendu par [e]. *)
+val add_edge : t -> edge -> t
+
+(** [make nodes edges] est le graphe de noeuds [nodes] et d'arêtes [edges]. *)
+val make : node list -> edge list -> t
+
+(** [nodes g] renvoie les noeuds de [g]. *)
+val nodes : t -> node list
+
+(** [edges g] renvoie les arêtes de [g]. *)
+val edges : t -> edge list
+
+(** [out g n] renvoie les arêtes de [g] sortant de [n]. *)
+val out : t -> node -> edge list

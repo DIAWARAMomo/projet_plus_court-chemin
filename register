@@ -1,0 +1,44 @@
+#!/usr/bin/env utop
+
+#require "lwt"
+#require "lwt_ppx"
+#require "cohttp"
+#require "cohttp-lwt-unix"
+
+open Lwt
+open Cohttp
+open Cohttp_lwt_unix
+
+let base =
+  "http://lms.hackojo.org"
+
+let register_uri =
+  Uri.of_string (base ^ "/register")
+
+let string_of_command cmd =
+  Lwt_process.(pread_line (shell cmd))
+
+let repository () =
+  string_of_command "git config --get remote.origin.url"
+
+let uri () =
+  let%lwt r = repository () in
+  Lwt.return (Uri.add_query_param register_uri ("git", [r]))
+
+let congratulations body =
+  Printf.printf
+    "Congratulations! Your lambda-man is registered.\n%s\n" body;
+  exit 0
+
+let failure code body =
+  Printf.printf
+    "Registration failed [%d]:\n%s\n" code body;
+  exit 1
+
+let main =
+  Lwt_main.run @@
+  let%lwt (resp, body) = uri () >>= Client.get in
+  let%lwt body = Cohttp_lwt.Body.to_string body in
+  resp |> Response.status |> Code.code_of_status |> function
+  | 200  -> congratulations body
+  | code -> failure code body

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+die () {
+  echo "Something went wrong :-("
+  echo "Make a bug report on the mailing list."
+  exit 1
+}
+
+opam update && opam switch create . -y --deps-only || die
+
+echo "Congratulations! Your project is ready for development."
